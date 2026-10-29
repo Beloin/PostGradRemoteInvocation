@@ -1,0 +1,12 @@
+{
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-17",
+      "path": "C:\\Program Files\\OpenLogic\\jdk-17.0.13.11-hotspot",
+      "default": true
+    }
+  ],
+  "kotlin.compiler.jvm.target": "17",
+"kotlin.java.home": "C:\\Program Files\\OpenLogic\\jdk-17.0.13.11-hotspot",
+"java.configuration.updateBuildConfiguration": "automatic"
+}

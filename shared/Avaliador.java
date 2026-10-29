@@ -63,10 +63,14 @@ public final class Avaliador {
 
   private static int codigo(String op) {
     switch (op) {
-      case "+": return 1;
-      case "-": return 2;
-      case "/": return 3;
-      case "*": return 4;
+      case "+":
+        return 1;
+      case "-":
+        return 2;
+      case "/":
+        return 3;
+      case "*":
+        return 4;
     }
     throw new IllegalArgumentException("operador invalido: " + op);
   }

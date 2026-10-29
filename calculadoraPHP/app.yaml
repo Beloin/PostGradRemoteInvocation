@@ -1,0 +1,5 @@
+runtime: php81  # Ou php74, php82 dependendo do que quiser usar
+
+handlers:
+  - url: /.*
+    script: auto
