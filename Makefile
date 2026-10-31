@@ -6,7 +6,7 @@ PHP_DIR = calculadoraPHP
 MQTT_DIR = MQTTMonitor
 RPC_DIR = rpcKTOR
 
-.PHONY: build build-rmi server-socket client-socket run-socket server-rmi client-rmi run-rmi server-rpc client-rpc run-rpc build-http client-http server-php mqtt-up mqtt-down mqtt-logs build-cat build-alarms cat-service alarms
+.PHONY: build build-rmi server-socket client-socket run-socket server-rmi client-rmi run-rmi server-rpc client-rpc run-rpc build-http client-http server-php mqtt-up mqtt-down mqtt-logs cat-service alarms sensor-sim
 
 build:
 	mkdir -p $(CLI_DIR)/classes
@@ -71,16 +71,13 @@ mqtt-down:
 mqtt-logs:
 	docker logs -f mosquitto
 
-build-cat:
-	mkdir -p $(MQTT_DIR)/CATService/classes
-	javac -encoding UTF-8 -cp $(MQTT_DIR)/lib/org.eclipse.paho.client.mqttv3-1.2.5.jar -d $(MQTT_DIR)/CATService/classes $(MQTT_DIR)/CATService/src/CATService.java
+# Simulador de sensores em Python ($(MQTT_DIR)/sensorSimulator): cria o venv na primeira execução
+sensor-sim:
+	cd $(MQTT_DIR)/sensorSimulator && bash -c '[ -x .venv/bin/python ] || (python3 -m venv .venv && .venv/bin/pip install -q paho-mqtt); .venv/bin/python simulador.py'
 
-build-alarms:
-	mkdir -p $(MQTT_DIR)/Alarms/classes
-	javac -encoding UTF-8 -cp $(MQTT_DIR)/lib/org.eclipse.paho.client.mqttv3-1.2.5.jar -d $(MQTT_DIR)/Alarms/classes $(MQTT_DIR)/Alarms/src/Alarms.java
+# Dependências (Paho) resolvidas pelo Gradle a partir do Maven Central
+cat-service:
+	cd $(MQTT_DIR) && ./gradlew :CATService:run
 
-cat-service: build-cat
-	java -cp $(MQTT_DIR)/CATService/classes:$(MQTT_DIR)/lib/org.eclipse.paho.client.mqttv3-1.2.5.jar CATService
-
-alarms: build-alarms
-	java -cp $(MQTT_DIR)/Alarms/classes:$(MQTT_DIR)/lib/org.eclipse.paho.client.mqttv3-1.2.5.jar Alarms
+alarms:
+	cd $(MQTT_DIR) && ./gradlew :Alarms:run

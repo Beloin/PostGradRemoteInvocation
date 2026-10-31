@@ -37,6 +37,20 @@ class CalculatorRpcClient(private val client: HttpClient, private val endpoint: 
     }
 }
 
+
+// Mensagem de falha legível: quando o servidor não está no ar a exceção de
+// conexão vem com message nula (imprimia "Falha RPC: null")
+private fun mensagemFalha(e: Exception): String {
+    var causa: Throwable? = e
+    while (causa != null) {
+        if (causa is java.net.ConnectException) {
+            return "não foi possível conectar ao servidor em http://localhost:8080 — o servidor está no ar?"
+        }
+        causa = causa.cause
+    }
+    return e.message ?: e.toString()
+}
+
 fun main() = runBlocking {
     // Configura o HttpClient usando a engine nativa Java do JDK 17
     val httpClient = HttpClient(Java) {
@@ -90,7 +104,7 @@ fun main() = runBlocking {
                 }
                 println("-> Resposta remota do servidor: $resultado")
             } catch (e: Exception) {
-                println("-> Falha RPC: ${e.message}")
+                println("-> Falha RPC: ${mensagemFalha(e)}")
             }
             continue
         }
@@ -117,7 +131,7 @@ fun main() = runBlocking {
             }
             println("-> Resposta remota do servidor: $resultado")
         } catch (e: Exception) {
-            println("-> Falha RPC: ${e.message}")
+            println("-> Falha RPC: ${mensagemFalha(e)}")
         }
     }
 
