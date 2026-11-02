@@ -14,4 +14,6 @@ Códigos dos projetos de Sistemas Distribuídos (PPCSD).
 
 ## Demonstração MQTT
 
-[![Vídeo de demonstração](__video.png)](https://drive.google.com/file/d/1cH7crceAA0Ld_9H1FBfPYO8gDzq0V7cE/view?usp=sharing)
+<a href="https://drive.google.com/file/d/1cH7crceAA0Ld_9H1FBfPYO8gDzq0V7cE/view?usp=sharing" target="_blank">
+  <img src="__video.png" alt="Vídeo de demonstração" width="400">
+</a>
